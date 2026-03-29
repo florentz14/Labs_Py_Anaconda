@@ -74,7 +74,24 @@ pip install numpy pandas matplotlib seaborn
 
 ## Usage
 
-Launch Jupyter Lab or Notebook from repository root:
+1. Initialize the SQLite database from schema + seed scripts:
+
+```bash
+python init_school_db.py
+```
+
+This creates `data/sql/school.db` and applies:
+
+- `data/sql/school_schema.sql`
+- `data/sql/school_seed.sql`
+
+2. Confirm the database connection works:
+
+```bash
+python database.py
+```
+
+3. Start Jupyter Lab/Notebook from repository root:
 
 ```bash
 jupyter lab
@@ -82,11 +99,17 @@ jupyter lab
 jupyter notebook
 ```
 
-Open and run notebooks or scripts in the appropriate folders:
+4. Open and run notebooks or scripts in the appropriate folders:
 
 - `matplotlib/` : visualization examples
 - `pandas/` : data manipulation examples
 - `files/` : miscellaneous input/output data files
+
+### Database configuration
+
+- `settings.py` uses `DATABASE_URL` from `.env` with default `sqlite:///./data/sql/school.db`.
+- `init_school_db.py` uses `SCHOOL_DB_PATH` from `settings.py`.
+- The generated `data/sql/school.db` is excluded by `.gitignore`.
 
 ## How to Contribute
 

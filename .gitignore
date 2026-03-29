@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pwsh
+*.egg-info/
+build/
+dist/
+.eggs/
+*.egg
+
+# Environments
+.env
+.venv/
+venv/
+ENV/
+.Python
+
+# Jupyter
+.ipynb_checkpoints
+
+# IDEs
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*~

@@ -7,4 +7,4 @@ plt.title('Simple line plot')
 plt.xlabel('x')
 plt.ylabel('y')
 plt.grid(True)
-# plt.show()  # uncomment when running interactively
+plt.show()  # uncomment when running interactively

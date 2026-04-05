@@ -103,6 +103,7 @@ jupyter notebook
 
 - `matplotlib/` : visualization examples
 - `pandas/` : data manipulation examples
+- `numpy/` : numerical computing examples with NumPy arrays
 - `files/` : miscellaneous input/output data files
 
 ### Database configuration

@@ -8,12 +8,13 @@
 from __future__ import annotations
 
 import sqlite3
+from pathlib import Path
 
-from settings import SCHOOL_DB_PATH, SQL_PATH
-
-DB_FILE = SCHOOL_DB_PATH
-SCHEMA_SQL = SQL_PATH / "school_schema.sql"
-SEED_SQL = SQL_PATH / "school_seed.sql"
+_ROOT = Path(__file__).resolve().parent
+SQL_DIR = _ROOT / "data" / "sql"
+DB_FILE = SQL_DIR / "school.db"
+SCHEMA_SQL = SQL_DIR / "school_schema.sql"
+SEED_SQL = SQL_DIR / "school_seed.sql"
 
 
 def _run_script(conn: sqlite3.Connection, path: str) -> None:
@@ -23,7 +24,7 @@ def _run_script(conn: sqlite3.Connection, path: str) -> None:
 
 def main() -> None:
     if not SCHEMA_SQL.is_file() or not SEED_SQL.is_file():
-        raise FileNotFoundError(f"Missing {SCHEMA_SQL.name} or {SEED_SQL.name} under {SQL_PATH}")
+        raise FileNotFoundError(f"Missing {SCHEMA_SQL.name} or {SEED_SQL.name} under {SQL_DIR}")
 
     if DB_FILE.is_file():
         DB_FILE.unlink()

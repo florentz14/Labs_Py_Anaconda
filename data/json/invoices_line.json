@@ -1,0 +1,20 @@
+[
+    {
+        "invoice_id": "1",
+        "product_id": "1",
+        "quantity": "10",
+        "unit_price": "0.5"
+    },
+    {
+        "invoice_id": "1",
+        "product_id": "2",
+        "quantity": "5",
+        "unit_price": "1.25"
+    },
+    {
+        "invoice_id": "2",
+        "product_id": "1",
+        "quantity": "3",
+        "unit_price": "0.5"
+    }
+]

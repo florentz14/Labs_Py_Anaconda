@@ -1,48 +1,42 @@
+"""SQLAlchemy: carga `.env` y expone DATABASE_URL (SQLite o PostgreSQL)."""
+
+from __future__ import annotations
+
 import os
 from pathlib import Path
+from urllib.parse import quote_plus
 
-# Cargar .env si está instalado
-try:
-    from dotenv import load_dotenv
-    load_dotenv(dotenv_path=Path(__file__).parent / '.env')
-except ImportError:
-    pass
+from dotenv import load_dotenv
 
-# Variables de configuración, con valores por defecto si no están en el entorno
-API_KEY = os.environ.get('API_KEY', '')
-SECRET_KEY = os.environ.get('SECRET_KEY', '')
+_REPO_ROOT = Path(__file__).resolve().parent
+load_dotenv(_REPO_ROOT / ".env")
+
+_default_sqlite = _REPO_ROOT / "data" / "sql" / "school.db"
 
 
-# Project root (directory containing this file)
-BASE_PATH = Path(__file__).resolve().parent
-
-# Data directories
-DATA_PATH = BASE_PATH / "data"
-CSV_PATH = DATA_PATH / "csv"
-GEN_PATH = DATA_PATH / "gen"
-JSON_PATH = DATA_PATH / "json"
-SQL_PATH = DATA_PATH / "sql"
-TEXT_PATH = DATA_PATH / "text"
-
-# Built by labs/sql/init_school_db.py from school_schema.sql + school_seed.sql
-SCHOOL_DB_PATH = SQL_PATH / "school.db"
-
-# Lab file examples (read/write in labs/files/)
-FILES_PATH = TEXT_PATH
-
-# URL de base de datos para SQLAlchemy (SQLite3 por defecto)
-DATABASE_URL = os.environ.get(
-    'DATABASE_URL',
-    'sqlite:///./data/sql/school.db'
-)
-
-def get_required_env(key: str) -> str:
-    value = os.environ.get(key)
-    if not value:
-        raise EnvironmentError(f"Environment variable '{key}' is required but not set")
-    return value
+def _postgres_url_from_env() -> str:
+    user = os.environ.get("POSTGRES_USER", "postgres")
+    password = os.environ.get("POSTGRES_PASSWORD", "")
+    host = os.environ.get("POSTGRES_HOST", "localhost")
+    port = os.environ.get("POSTGRES_PORT", "5432")
+    db = os.environ.get("POSTGRES_DB", "postgres")
+    u = quote_plus(user)
+    p = quote_plus(password) if password else None
+    auth = f"{u}:{p}@" if p is not None else f"{u}@"
+    return f"postgresql+psycopg://{auth}{host}:{port}/{db}"
 
 
-if __name__ == '__main__':
-    print('Settings loaded:')
-    print('DATABASE_URL=', DATABASE_URL)
+def _resolve_database_url() -> str:
+    explicit = os.environ.get("DATABASE_URL", "").strip()
+    if explicit:
+        return explicit
+    backend = os.environ.get("DB_BACKEND", "sqlite").lower()
+    if backend in ("postgresql", "postgres", "pg"):
+        return _postgres_url_from_env()
+    return "sqlite:///" + _default_sqlite.resolve().as_posix()
+
+
+DATABASE_URL = _resolve_database_url()
+
+if __name__ == "__main__":
+    print("DATABASE_URL =", DATABASE_URL)

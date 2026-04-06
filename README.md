@@ -32,6 +32,7 @@ This project contains Python scripts, sample data under `data/`, and experiments
 | `database.py` | SQLAlchemy engine using `settings.DATABASE_URL` |
 | `init_school_db.py` | Builds `data/sql/school.db` from SQL files |
 | `settings.py` | Loads `.env` and resolves `DATABASE_URL` (SQLite or PostgreSQL) |
+| `environment.yml` | Minimal Conda spec to recreate the lab environment |
 
 ## Clone the Repository
 
@@ -60,25 +61,23 @@ cd Labs_Py_Anaconda
 
 ## Setup (Conda or pip)
 
-Create and activate an environment (example with Conda):
+**Option A — from `environment.yml` (recommended):**
+
+```bash
+conda env create -f environment.yml
+conda activate labs_py
+```
+
+**Option B — manual Conda env:**
 
 ```bash
 conda create -n ds-env python=3.11 -y
 conda activate ds-env
-```
-
-Install dependencies used by this repo:
-
-```bash
-conda install jupyter ipykernel sqlalchemy python-dotenv -y
-pip install numpy pandas matplotlib seaborn
-```
-
-For **PostgreSQL** with SQLAlchemy, also install the driver:
-
-```bash
+conda install -c conda-forge jupyter ipykernel sqlalchemy python-dotenv numpy pandas matplotlib seaborn pytest -y
 pip install psycopg
 ```
+
+`psycopg` is the PostgreSQL driver for SQLAlchemy URLs like `postgresql+psycopg://...` (already included in `environment.yml` via pip).
 
 ## Usage
 

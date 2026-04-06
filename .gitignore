@@ -12,6 +12,8 @@ dist/
 
 # Environments
 .env
+# Local full conda exports (may contain absolute prefix paths)
+ambiente.yml
 .venv/
 venv/
 ENV/
